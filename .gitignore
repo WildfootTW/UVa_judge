@@ -26,3 +26,6 @@
 *.exe
 *.out
 *.app
+
+# bad code
+UVA*.*
