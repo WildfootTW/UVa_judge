@@ -74,8 +74,8 @@ int main()
             cin >> arr[i];
         }
         merge(0, n - 1,arr);
-        for(int i = 0;i < n;i++)
-            cout << buf[i] << " ";
+        //for(int i = 0;i < n;i++)
+            //cout << buf[i] << " ";
           cout << total << endl;
     }
     return 0;
