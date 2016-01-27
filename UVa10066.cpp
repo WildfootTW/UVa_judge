@@ -7,11 +7,13 @@ int main()
     int k = 0;
     while(1)
     {
-        k++;
         int n,m;
         cin >> n >> m;
         if(n == 0 && m == 0)
             break;
+         if(k)
+            cout << endl;
+        k++;
 
         int arr[n + 1],brr[m + 1],LCS[n + 1][m + 1];
         //arr[0] = 0;
@@ -58,7 +60,7 @@ int main()
             }
         }
         cout << "Twin Towers #" << k << endl;
-        cout <<"Number of Tiles : "<< LCS[n][m] << endl << endl;
+        cout <<"Number of Tiles : "<< LCS[n][m] << endl;
         
     }
     return 0;
