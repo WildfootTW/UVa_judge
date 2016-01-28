@@ -11,24 +11,20 @@ int main()
         cin >> n >> m;
         if(n == 0 && m == 0)
             break;
-         if(k)
-            cout << endl;
+        
+        //if(k)
+        //    cout << endl;
         k++;
 
-        int arr[n + 1],brr[m + 1],LCS[n + 1][m + 1];
-        //arr[0] = 0;
-        //brr[0] = 0;
+        int arr[123],brr[123],LCS[123][123];
         for(int i = 1;i <= n;i++)
         {
             cin >> arr[i];
-            //LCS[i][0] = 0;
         }
         for(int i = 1;i <= m;i++)
         {
             cin >> brr[i];
-            //LCS[0][i] = 0;
         }
-        //LCS[0][0] = 0;
         for(int i = 0;i <= n;i++)
         {
             for(int j = 0;j <= m;j++)
@@ -60,7 +56,7 @@ int main()
             }
         }
         cout << "Twin Towers #" << k << endl;
-        cout <<"Number of Tiles : "<< LCS[n][m] << endl;
+        cout <<"Number of Tiles : "<< LCS[n][m] << endl << endl;
         
     }
     return 0;
