@@ -51,6 +51,8 @@ int main()
                 {
                     LCS[i][j] = LCS[i - 1][j - 1] + 1;
                 }
+                else if(LCS[i - 1][j] > LCS[i][j - 1])
+                    LCS[i][j] = LCS[i - 1][j];
                 else
                 {
                     LCS[i][j] = LCS[i][j - 1];                
@@ -58,13 +60,15 @@ int main()
             }
         }
 
+        /*
         for(int i = 1;i <= n;i++)
         {
             if(ans < LCS[i][m])
                 ans = LCS[i][m];
         }
+        */
         cout << "Twin Towers #" << k << endl;
-        cout <<"Number of Tiles : "<< ans << endl << endl;
+        cout <<"Number of Tiles : "<< LCS[n][m] << endl << endl;
         /*
         for(int j = 0;j <= n;j++)
         {
