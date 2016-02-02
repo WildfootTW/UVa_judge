@@ -1,22 +1,18 @@
 #include <iostream>
-#define maxn 500000
 
 using namespace std;
 
 int main()
 {
-    int arr[maxn],sum = 0,n,ans = 0;
+    int keyin = 0,sum = 0,n,ans = 0;
     cin >> n;
     for(int i = 0;i < n;i++)
     {
-        cin >> arr[i];
-    }
 
-    for(int i = 0;i < n;i++)
-    {
-        if(sum + arr[i] > 0)
+        cin >> keyin;
+        if(sum + keyin > 0)
         {
-            sum = sum + arr[i];
+            sum = sum + keyin;
             if(sum > ans)
             {
                 ans = sum;
