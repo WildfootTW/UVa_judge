@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdio>
 
 using namespace std;
 
@@ -8,8 +9,7 @@ int main()
     cin >> n;
     for(int i = 0;i < n;i++)
     {
-
-        cin >> keyin;
+        scanf("%d",&keyin);
         if(sum + keyin > 0)
         {
             sum = sum + keyin;
