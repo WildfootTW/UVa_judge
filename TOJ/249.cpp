@@ -6,11 +6,12 @@ using namespace std;
 int main()
 {
     int keyin = 0,n;
-    long long sum = 0,ans = 0;
+    long long sum = 0,ans = -2147483647;
     cin >> n;
     for(int i = 0;i < n;i++)
     {
         scanf("%d",&keyin);
+        /*
         if(sum + keyin > 0)
         {
             sum = sum + keyin;
@@ -22,6 +23,14 @@ int main()
         else
         {
             sum = 0;
+        }
+        */
+        if(sum < 0)
+            sum = 0;
+        sum += keyin;
+        if(sum > ans)
+        {
+            ans = sum;
         }
     }
     cout << ans << endl;
