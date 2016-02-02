@@ -27,6 +27,8 @@ int main()
     int n, m;
     while(cin >> n >> m)
     {
+
+        for(int i = 0;i < 801;i++) V[i].clear();
         int Q1, Q2;
         while(m--)
         {
@@ -35,7 +37,6 @@ int main()
             V[a].push_back(b);
         }
         memset(used,0,sizeof(used));
-        for(int i = 0;i < 801;i++) V[i].clear();
         cin >> Q1 >> Q2;
         DFS(Q1,Q2);
         if(flag)
