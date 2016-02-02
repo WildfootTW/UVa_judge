@@ -1,6 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <stack>
 #include "memory.h"
 
 using namespace std;
@@ -25,21 +24,25 @@ void DFS(int n,int q)
 }
 int main()
 {
-    int n, m, Q1, Q2;
-    cin >> n >> m;
-    while(m--)
+    int n, m;
+    while(cin >> n >> m)
     {
-        int a, b;
-        cin >> a >> b;
-        V[a].push_back(b);
+        int Q1, Q2;
+        while(m--)
+        {
+            int a, b;
+            cin >> a >> b;
+            V[a].push_back(b);
+        }
+        memset(used,0,sizeof(used));
+        cin >> Q1 >> Q2;
+        DFS(Q1,Q2);
+        if(flag)
+            cout << "Yes!!!" << endl;
+        else
+            cout << "No!!!" << endl;
+
     }
-    memset(used,0,sizeof(used));
-    cin >> Q1 >> Q2;
-    DFS(Q1,Q2);
-    if(flag)
-        cout << "Yes!!!" << endl;
-    else
-        cout << "No!!!" << endl;
 }
 
 
