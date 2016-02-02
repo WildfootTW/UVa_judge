@@ -7,7 +7,7 @@ int main()
 {
     int keyin = 0,n;
     long long sum = 0,ans = -2147483647;
-    cin >> n;
+    scanf("%d" ,&n);
     for(int i = 0;i < n;i++)
     {
         scanf("%d",&keyin);
