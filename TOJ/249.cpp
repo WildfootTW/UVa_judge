@@ -5,7 +5,8 @@ using namespace std;
 
 int main()
 {
-    int keyin = 0,sum = 0,n,ans = 0;
+    int keyin = 0,n;
+    long long sum = 0,ans = 0;
     cin >> n;
     for(int i = 0;i < n;i++)
     {
