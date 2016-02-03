@@ -43,7 +43,7 @@ int main()
             cout << "Yes!!!" << endl;
         else
             cout << "No!!!" << endl;
-
+        flag = 0;
     }
 }
 
