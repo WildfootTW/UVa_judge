@@ -1,6 +1,6 @@
 #include <iostream>
 #define INF 2147483647
-#define MAX 100000    //MAX10000000
+//#define MAX 100000    //MAX10000000
 
 using namespace std;
 
@@ -12,7 +12,7 @@ int main()
     {
         int ans = 0, n;
         cin >> n;
-        int item[n][2], dp[MAX][V + 1];
+        int item[n][2], dp[2][V + 1];
         for(int i = 0;i < n;i++)
             for(int j = 0;j < 2;j++)
                 cin >> item[i][j];
@@ -21,7 +21,6 @@ int main()
         dp[0][0] = 0;
         dp[0][item[0][0]] = item[0][1]; 
 
-        int count = 1;
         for(int i = 0;i < n;i++)
         {
 
@@ -33,21 +32,23 @@ int main()
                 for(int j = 0;j <= V;j++)
                 {
                     if(j < item[i][0])
-                        dp[count][j] = dp[count - 1][j];
+                        dp[1][j] = dp[0][j];
                     else
                     {
-                        dp[count][j] = dp[count - 1][j - item[i][0]] + item[i][1];
-                        if(dp[count][j] < dp[count - 1][j])
-                            dp[count][j] = dp[count - 1][j];
+                        dp[1][j] = dp[0][j - item[i][0]] + item[i][1];
+                        if(dp[1][j] < dp[0][j])
+                            dp[1][j] = dp[0][j];
                     }
                 }
-            count++;
+                for(int j = 0;j <= V;j++)
+                {
+                    swap(dp[1][j],dp[0][j]);
+                }
             }
         }
-        count--;
         for(int i = 0;i <= V;i++)
-            if(ans < dp[count][i])
-                ans = dp[count][i];
+            if(ans < dp[0][i])
+                ans = dp[0][i];
 
         /*
         cout << "count = " << count << endl;    
