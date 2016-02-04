@@ -34,13 +34,10 @@ int main()
             //{
                 for(int j = 0;j <= V;j++)
                 {
-                    if(j < item[i][0])
-                        dp[j] = dp[j];
-                    else
+                    if(!(j < item[i][0]))
                     {
-                        dp[j] = dp[j - item[i][0]] + item[i][1];
-                        if(dp[j] < dp[j])
-                            dp[j] = dp[j];
+                        if(dp[j] < dp[j - item[i][0]] + item[i][1])
+                            dp[j] = dp[j - item[i][0]] + item[i][1];
                     }
                 }
                 //for(int j = 0;j <= V;j++)
