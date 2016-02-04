@@ -1,23 +1,24 @@
 #include <iostream>
 #define INF 2147483647
-#include <cstdio>
 //#define MAX 100000    //MAX10000000
 
 using namespace std;
 
 int main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
 
     int V;
     while(cin >> V)
     {
-        int ans = 0, n;
+        long long ans = 0;
+        int n;
         cin >> n;
-        int item[n][2], dp[V + 1];
+        long long item[n][2], dp[V + 1];
         for(int i = 0;i < n;i++)
             for(int j = 0;j < 2;j++)
-                scanf("%d", &item[i][j]);
-                //cin >> item[i][j];
+                cin >> item[i][j];
         
         for(int i = 0;i <= V;i++)   dp[i] = -INF;
         dp[0] = 0;
