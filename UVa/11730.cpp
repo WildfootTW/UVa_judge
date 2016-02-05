@@ -6,7 +6,7 @@ using namespace std;
 
 int ptr,Prime[169],level; //168+1
 vector<int> V[1001];
-bool used[1001],flag;
+bool used[1001],flag,used_Prime[1001];
 void Prime_factor(int n)
 {
     for(unsigned int i = 2;i <= n;i++)
@@ -35,6 +35,7 @@ void initial_graph(int n)
     {
         V[i].clear();
         used[i] = 0;
+        used_Prime[i] = 0;
     }
     level = 0;
     flag = 1;
@@ -42,9 +43,10 @@ void initial_graph(int n)
 
 int main()
 {
-    int S,T;
+    int S,T,NN = 0;
     while(cin >> S >> T)
     {
+        NN++;
         if(S == 0 || T == 0)
             break;
         queue<int> qu;
@@ -54,12 +56,14 @@ int main()
         {
            
             int node = qu.front();
-            if(node < T)
+            if(node < T && used_Prime[node] == 0)
             {
                 initial_Prime(node);
                 Prime_factor(node);
+                used_Prime[node] = 1;
                 for(int i = 1;i < ptr;i++)
                 {
+                    //cout << node <<" + "<< Prime[i] <<" = "<< node + Prime[i] << endl;
                     V[node].push_back(node + Prime[i]);
                     //V[node + Prime[i]].push_back(node);
                     qu.push(node + Prime[i]);
@@ -69,7 +73,18 @@ int main()
             qu.pop();
         }
 
+        for(int i = 0;i <= 1000;i++)
+        {
+            
+            for(int j:V[i])
+            {
+                cout << "from " << i << " to " << j << endl;
+                //cout << "&&" << i << "&&";
+                //cout <<"|"<< j << "|"<< endl;
+            }
+        }
 
+        //cout << "Start BFS!!" << endl;
         //BFS
         pair<int,int> node_pair[1000];
         node_pair[S].first = S;
@@ -83,14 +98,17 @@ int main()
         {
             int node = bfsqu.front();
             bfsqu.pop();
+            //cout << "node = " << node << "T = " << T << endl;
             if(node == T)
             {
                 level = node_pair[node].second;
                 flag = 0;
                 break;
             }
+            //cout << V[node][0];
             for( int i:V[node] )
             {
+                //cout << i << " ";
                 if( !used[i] )
                 {
                     node_pair[i].first = i;
@@ -102,6 +120,7 @@ int main()
         }
         if(flag)
             level = -1;
-        cout << level << endl;
+        cout <<"Case "<< NN <<": "<< level << endl;
     }
+    return 0;
 }
