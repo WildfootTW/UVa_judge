@@ -20,6 +20,8 @@ int main()
     while( T-- )
     {
         int total = 0;
+        flag_0 = 0;
+        flag_3x = 0;
         //cout << T << endl;
         getline(cin,s);
         //* 
