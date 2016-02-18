@@ -9,16 +9,14 @@ int main()
     {
         if(s == "\0")
             break;
-        int total = 0;
+        long long total = 0;
         for(int i = 0;i < s.length();i++)
         {
             if(s[i] == ' ')
                 total++;
         }
-        cout << total << endl;
+        cout << total + 1 << endl;
     }
-
-
 
     return 0;
 }
