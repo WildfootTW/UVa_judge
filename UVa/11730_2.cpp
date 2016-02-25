@@ -4,9 +4,9 @@
 #include <utility>
 using namespace std;
 
-int ptr,Prime[169],level[1001],ans = 2147483647; //168+1
+int ptr,Prime[169],level[1497],ans = 2147483647; //168+1
 vector<int> V[1001];
-bool used[1001],flag,used_Prime[1001];
+bool used[1497],flag;
 void Prime_factor(int n)
 {
     for(unsigned int i = 2;i <= n;i++)
@@ -35,7 +35,6 @@ void initial_graph(int n,int S)
     {
         V[i].clear();
         used[i] = 0;
-        used_Prime[i] = 0;
     }
     for(int i = S;i <= n;i++)
         level[i] = 2147483647;
@@ -62,13 +61,14 @@ int main()
         {
            
             int node = qu.front();
-            if(node < T && used_Prime[node] == 0)
+            if(node < T && used[node] == 0)
             {
                 initial_Prime(node);
                 Prime_factor(node);
-                used_Prime[node] = 1;
+                used[node] = 1;
                 for(int i = 1;i < ptr;i++)
                 {
+                    cout << level[102] << endl; 
                     int Newnode = node + Prime[i];
                     V[node].push_back(Newnode);
                     qu.push(Newnode);
@@ -78,6 +78,7 @@ int main()
                         cout << "When node = " << node;
                         cout << " level [" << Newnode <<"] = " << level[Newnode] << endl;
                     }
+                    cout << level[102] << endl; 
                     if(Newnode == T)
                     {
                         flag = 0;

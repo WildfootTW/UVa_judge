@@ -4,6 +4,7 @@
 using namespace std;
 vector<int> V[10001];
 stack<int> qu;
+int B;
 bool used[10001],flag = 1;
 void initial(int n)
 {
@@ -20,11 +21,14 @@ void initial_DFS(int n)
     while(!qu.empty())
         qu.pop();
 }
-void DFS(int n,int b)
+void DFS(int n)
 {
     if(flag)
+    {
+        cout << "qu.push()" << n << endl;
         qu.push(n);
-    if(n == b)
+    }
+    if(n == B)
         flag = 0;
     //cout << n << " ";
     used[n] = 1;
@@ -32,9 +36,14 @@ void DFS(int n,int b)
     {
         if(!used[e])
         {
-            DFS(e,b);
+            //cout << "DFS(e)" << e << endl;
+            //DFS(e);
             if(flag)
+            {
+                cout << "DFS(e)" << e << endl;
+                DFS(e);
                 qu.pop();
+            }   
         }   
     }
 }
@@ -54,11 +63,12 @@ int main()
     }
     while(Q--)
     {
-        int a,b,Num;
+        int a,Num;
         bool gNum;
-        cin >> a >> b;
+        cin >> a >> B;
         initial_DFS(N);
-        DFS(a,b);
+        DFS(a);
+        /*
         gNum = qu.size() % 2; //1 -> 1  0 -> 2
         if(gNum)
             Num = qu.size() / 2;
@@ -80,15 +90,15 @@ int main()
                 swap(x,y);
             cout << x << " " << y << endl;
         }
+        */
         
-        /*
-        cout << qu.size() << endl;
+        cout << endl << qu.size() << endl;
         while(!qu.empty())
         {
             cout << qu.top() << " | ";
             qu.pop();
         }
-        */
+        
 
     }
     return 0;

@@ -9,7 +9,7 @@ int main()
     {
         if(s == "\0")
             break;
-        long long total = 0;
+        int total = 0;
         for(int i = 0;i < s.length();i++)
         {
             if(s[i] == ' ')

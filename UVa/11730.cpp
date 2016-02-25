@@ -63,7 +63,7 @@ int main()
                 used_Prime[node] = 1;
                 for(int i = 1;i < ptr;i++)
                 {
-                    //cout << node <<" + "<< Prime[i] <<" = "<< node + Prime[i] << endl;
+                    //cout << "make edge from " << node << " to " << node + Prime[i] << endl;
                     V[node].push_back(node + Prime[i]);
                     //V[node + Prime[i]].push_back(node);
                     qu.push(node + Prime[i]);
