@@ -1,3 +1,8 @@
+/*
+ *  dp
+ *  窮舉最後一段
+ *              by Wildfoot
+ */
 #include <iostream>
 #include <cstring>
 #define MAX 50
