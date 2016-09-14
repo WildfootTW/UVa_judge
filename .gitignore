@@ -1,4 +1,5 @@
 test.cpp
+*.swp
 *~
 
 # Compiled Object files
