@@ -18,9 +18,9 @@ void change_node(int n)
         int fix = pow(2, i);
         node[i] = count & fix;
     }
-    for(int i = 0;i < nodeN;i++)
-        cout << node[i] << " ";
-    cout << endl;
+//    for(int i = 0;i < nodeN;i++)
+//        cout << node[i] << " ";
+//    cout << endl;
 }
 
 bool check()
@@ -38,7 +38,7 @@ bool check()
             }
         }
     }
-    cout << "****" << endl;
+//    cout << "****" << endl;
     return true;
 }
 
