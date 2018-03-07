@@ -1,3 +1,4 @@
+//Accepted
 #include <iostream>
 #include <utility>
 #define MAX 1005
