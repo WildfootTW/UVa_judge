@@ -1,6 +1,8 @@
 test.cpp
 *.swp
 *~
+peda-session*
+.gdb_history
 
 # Compiled Object files
 *.slo
