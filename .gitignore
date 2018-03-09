@@ -3,6 +3,7 @@ test.cpp
 *~
 peda-session*
 .gdb_history
+*out
 
 # Compiled Object files
 *.slo
