@@ -33,21 +33,35 @@ int find_father(int p)
 
 void update_upward(int index, int changed_sum, int changed_num)
 {
-    while(1)
+    static int index_buffer = 0, changed_sum_buffer = 0, changed_num_buffer = 0;
+    if(index_buffer == index)
     {
-        node *the_node = &nodes[index];
-        the_node->sum += changed_sum;
-        the_node->num += changed_num;
+        changed_sum_buffer += changed_sum;
+        changed_num_buffer += changed_num;
+        return;
+    }
+    else
+    {
+        while(1)
+        {
+            node *the_node = &nodes[index_buffer];
+            the_node->sum += changed_sum_buffer;
+            the_node->num += changed_num_buffer;
 
-        if(index == the_node->father)
-            break;
-        index = the_node->father;
+            if(index_buffer == the_node->father)
+                break;
+            index_buffer = the_node->father;
+        }
+        index_buffer = index;
+        changed_sum_buffer = changed_sum;
+        changed_num_buffer = changed_num;
     }
     return;
 }
 
 void initial(int n)
 {
+    update_upward(0, 0, 0);
     for(int i = 0;i <= n;i++)
     {
         node *the_node = &nodes[i];
@@ -153,6 +167,7 @@ void moves(int p, int q)
 
 void print_node(int p)
 {
+    update_upward(0, 0, 0);
     node *the_node = &nodes[find_father(p)];
     cout << the_node->num << " " << the_node->sum << endl;
 
