@@ -1,7 +1,7 @@
 // 
 // WildfootW 2018
 // https://github.com/Wildfoot
-// Wrong Answer
+// Accepted
 
 #include <iostream>
 #include <ctime>
@@ -15,160 +15,75 @@ using namespace std;
 #define MAX 100001
 
 struct node{
-    int father, sum, num;
-    vector<int> son;
+    int root;
+    vector<int> sons;
 };
 
 node nodes[MAX];
 
-int find_father(int p)
-{
-    if(nodes[p].father == p)
-        return p;
-//    p.father = find_father(nodes[p].father);
-//    return p.father
-    return find_father(nodes[p].father);
-}
-
-void update_upward(int index, int changed_sum, int changed_num)
-{
-    static int index_buffer = 0, changed_sum_buffer = 0, changed_num_buffer = 0;
-    if(index_buffer == index)
-    {
-        changed_sum_buffer += changed_sum;
-        changed_num_buffer += changed_num;
-        return;
-    }
-    else
-    {
-        while(1)
-        {
-            node *the_node = &nodes[index_buffer];
-            the_node->sum += changed_sum_buffer;
-            the_node->num += changed_num_buffer;
-
-            if(index_buffer == the_node->father)
-                break;
-            index_buffer = the_node->father;
-        }
-        index_buffer = index;
-        changed_sum_buffer = changed_sum;
-        changed_num_buffer = changed_num;
-    }
-    return;
-}
-
 void initial(int n)
 {
-    update_upward(0, 0, 0);
     for(int i = 0;i <= n;i++)
     {
         node *the_node = &nodes[i];
-        the_node->father = i;
-        the_node->sum = i;
-        the_node->num = 1;
-        the_node->son.clear();
+        the_node->root = i;
+        the_node->sons.clear();
+        the_node->sons.push_back(i);
     }
     return;
 }
 void unions(int p, int q)
 {
-    p = find_father(p);
-    q = find_father(q);
-    if(find_father(p) == find_father(q))
-        return;
-
+    p = nodes[p].root;
+    q = nodes[q].root;
     node *node_p = &nodes[p], *node_q = &nodes[q];
 
-    if(node_p->num < node_q->num)
+    if(p == q)
+        return;
+
+    if(node_p->sons.size() < node_q->sons.size())
     {
         swap(node_p, node_q);
         swap(p, q);
     }
 
-    node_q->father = p;
-    update_upward(p, node_q->sum, node_q->num);
-    node_p->son.push_back(q);
-
-    return;
-}
-
-void isolates(int p)
-{
-    node *node_p = &nodes[p];
-    if(node_p->father == p)
+    for(int n:node_q->sons)
     {
-        if(node_p->son.empty())
-            return;
-        int node_new_father_index = node_p->son.back();
-        node_p->son.pop_back();
-        node *node_new_father = &nodes[node_new_father_index];
-
-        update_upward(p, node_new_father->sum * -1, node_new_father->num * -1);
-        //node_p->sum -= node_new_father->sum;
-        //node_p->num -= node_new_father->num;
-        node_new_father->father = node_new_father_index;
-
-        while(!node_p->son.empty())
-        {
-            int e = node_p->son.back();
-            node *node_son = &nodes[e];
-            node_p->son.pop_back();
-
-            update_upward(p, node_son->sum * -1, node_son->num * -1);
-            //node_p->sum -= node_son->sum;
-            //node_p->num -= node_son->num;
-            node_son->father = e;
-
-            unions(e, node_new_father_index);
-        }
+        node_p->sons.push_back(n);
+        nodes[n].root = p;
     }
-    else
-    {
-        node *node_father = &nodes[node_p->father];
-        node_father->son.erase(remove(node_father->son.begin(), node_father->son.end(), p), node_father->son.end());
-        //https://stackoverflow.com/questions/3385229/c-erase-vector-element-by-value-rather-than-by-position
-        update_upward(node_p->father, node_p->sum * -1, node_p->num * -1);
-        //node_father->sum -= node_p->sum;
-        //node_father->num -= node_p->num;
-        node_p->father = p;
+    node_q->sons.clear();
 
-        while(!node_p->son.empty())
-        {
-            int e = node_p->son.back();
-            node *node_son = &nodes[e];
-            node_p->son.pop_back();
-
-            update_upward(p, node_son->sum * -1, node_son->num * -1);
-            node_p->sum -= node_son->sum;
-            node_p->num -= node_son->num;
-            node_son->father = e;
-
-            unions(e, node_p->father);
-        }
-    }
     return;
 }
 
 //Move p to the set containing q
 void moves(int p, int q)
-{    
-    if(find_father(p) == find_father(q))
+{   
+    int root_p = nodes[p].root;
+    int root_q = nodes[q].root;
+    node *root_node_p = &nodes[root_p], *root_node_q = &nodes[root_q];
+
+    if(root_p == root_q)
         return;
 
-    node *node_p = &nodes[p], *node_q = &nodes[q];
-
-    isolates(p);
-    unions(p, q);
+    root_node_p->sons.erase(remove(root_node_p->sons.begin(), root_node_p->sons.end(), p), root_node_p->sons.end());
+    //https://stackoverflow.com/questions/3385229/c-erase-vector-element-by-value-rather-than-by-position
+    root_node_q->sons.push_back(p);
+    nodes[p].root = root_q;
     
     return;
 }
 
 void print_node(int p)
 {
-    update_upward(0, 0, 0);
-    node *the_node = &nodes[find_father(p)];
-    cout << the_node->num << " " << the_node->sum << endl;
+    int sum = 0;
+    node *the_node = &nodes[nodes[p].root];
+    for(int e:the_node->sons)
+    {
+        sum += e;
+    }
+    cout << the_node->sons.size() << " " << sum << endl;
 
     //node *the_node = &nodes[p];
 
@@ -218,7 +133,7 @@ int main()
         solve_problem(n, m);
     }
 
-    cout << "Time used = " << (double)clock() / CLOCKS_PER_SEC << endl;
+    //cout << "Time used = " << (double)clock() / CLOCKS_PER_SEC << endl;
     return 0;   
 }
 
