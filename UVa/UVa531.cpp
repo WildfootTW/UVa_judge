@@ -1,7 +1,7 @@
 // LCS
 // WildfootW 2018
 // https://github.com/Wildfoot
-// Wrong Answer
+// Accepted
 
 #include <iostream>
 #include <ctime>
@@ -115,13 +115,8 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(0);
 
-    //bool last_new_line_flag = false;
-    while(!cin.eof())
+    while(cin.peek() != EOF)
     {
-        //if(last_new_line_flag)
-        //    cout << endl;
-        //last_new_line_flag = true;
-
         initial();
 
         for(int i = 0;i < 2;i++)
@@ -134,8 +129,14 @@ int main()
                 sequence_of_word[i].push_back(keyin_word);
             }
         }
+        while(cin.peek() == ' ' || cin.peek() == '\n')
+        {
+            char discard_c;
+            cin.get(discard_c);
+        }
+
         int longest_ans = find_LCS(sequence_of_word[0].size() - 1, sequence_of_word[1].size() - 1);
-        print_LCS();
+        //print_LCS();
         find_solution_backward(sequence_of_word[0].size() - 1, sequence_of_word[1].size() - 1);
         while(!LCS_output.empty())
         {
