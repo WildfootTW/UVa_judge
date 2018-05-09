@@ -50,3 +50,12 @@
 ## Strongly Connected Component
 247, 315, 459, 610, 796, 10199, 10731, 10765, 11324, 11504, 11709, 11770, 11838, 12783
 
+## Competitive Algorithm Design and Practice Minimum Spanning Tree and 2D DP
+10034, 10147, 10397, 10600, 10842, 908, 10807, 11710, 11987, 10369, 11597, 10306, 108
+
+## String Matching
+455, 10298, 11475, 10679, 1449, 1254
+
+## Trie
+902, 10226, 10391, 10745
+
