@@ -6,7 +6,7 @@
  *
  */
 
-// Time limit exceeded
+// Accepted
 
 #include <iostream>
 #include <ctime>
