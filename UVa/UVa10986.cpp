@@ -3,8 +3,10 @@
  * Author: WildfootW
  * GitHub: github.com/Wildfoot
  * Copyright (C) 2018 WildfootW All rights reserved.
- * Accepted
+ *
  */
+
+// Time limit exceeded
 
 #include <iostream>
 #include <ctime>
@@ -51,43 +53,41 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(0);
 
-    int case_count = 0;
-    while(true)
+    int max_count;
+    cin >> max_count;
+
+    for(int count = 0;count < max_count;count++)
     {
-        int node_num;
-        cin >> node_num;
+        int node_num, edge_num;
+        cin >> node_num >> edge_num;
         if(!node_num)
             break;
-        node_num++;
 
-        priority_queue<tentative_node, vector<tentative_node>, custom_compare> pq;
-        node * nodes = new node [node_num];
-        vector<edge> * edges = new vector<edge> [node_num];
         int start_index, end_index;
+        cin >> start_index >> end_index;
 
-        for(int i = 1;i < node_num;i++)
+        priority_queue<tentative_node, vector<tentative_node>, custom_compare> pq;      // priority_queue sort the shortest node.distance at the top of pq
+        node * nodes = new node [node_num];     // save confirmed node which visit = true || shortest distance guessed now (which visit = false)
+        vector<edge> * edges = new vector<edge> [node_num];     // save graph in edges
+
+        while(edge_num--)
         {
-            int k;
-            cin >> k;
-            for(int j = 0;j < k;j++)
-            {
-                int input_to, input_cost;
-                cin >> input_to >> input_cost;
-                edges[i].push_back(edge{input_to, input_cost});
-            }
+            int input_A, input_B, input_cost;
+            cin >> input_A >> input_B >> input_cost;
+            edges[input_A].push_back(edge{input_B, input_cost});
+            edges[input_B].push_back(edge{input_A, input_cost});
         }
-        cin >> start_index;
-        cin >> end_index;
 
         pq.push(tentative_node{start_index, -1, 0});
         while(!pq.empty())
         {
             node cnode = pq.top();
             pq.pop();
+            // if the node is already on the shortest tree, just pop it.
             if(nodes[cnode.index].visit)
                 continue;
 
-            nodes[cnode.index] = node{cnode};
+            nodes[cnode.index] = node{cnode};   // confirm the tentative node to corrected node
             for(edge tedge:edges[cnode.index])
             {
                 if(!nodes[tedge.to].visit && nodes[tedge.to].distance > cnode.distance + tedge.cost)
@@ -98,19 +98,12 @@ int main()
             }
         }
 
-        cout << "Case " << ++case_count << ": Path =";
-        stack<int> route;
-        for(int pre = end_index;pre != -1;)
-        {
-            route.push(pre);
-            pre = nodes[pre].pre_index;
-        }
-        while(!route.empty())
-        {
-            cout << " " << route.top();
-            route.pop();
-        }
-        cout << "; " << nodes[end_index].distance << " second delay" << endl;
+        cout << "Case #" << count + 1 << ": ";
+        if(nodes[end_index].distance == INF)
+            cout << "unreachable";
+        else
+            cout << nodes[end_index].distance;
+        cout << endl;
 
         delete[] nodes;
         delete[] edges;
