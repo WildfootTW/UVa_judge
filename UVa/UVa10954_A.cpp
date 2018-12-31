@@ -15,7 +15,7 @@
 using namespace std;
 
 template<typename T> void print_queue(T& origin_q) {
-	auto q = origin_q;
+    auto q = origin_q;
     while(!q.empty()) {
         cout << q.top() << " ";
         q.pop();
@@ -44,7 +44,7 @@ int main()
 
         while(pq.size() != 1)
         {
-			//print_queue(pq);
+            //print_queue(pq);
             int a, b;
             a = pq.top();
             pq.pop();
@@ -57,6 +57,6 @@ int main()
     }
 
     //cout << "Time used = " << (double)clock() / CLOCKS_PER_SEC << endl;
-    return 0;   
+    return 0;
 }
 
