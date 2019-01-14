@@ -2,6 +2,14 @@
 [WildfootW](https://uhunt.onlinejudge.org/id/770322)
 
 # problem sets
+## Data structure
+### Heap
+[x]10954
+### Hash Set
+[x]1594
+### Hash Map
+[x]10282
+
 ## Sort
 [x]10327, [x]10810, [x]10107, [x]10026, 10420
 
