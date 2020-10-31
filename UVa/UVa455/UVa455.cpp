@@ -68,7 +68,8 @@ void KnuthMorrisPratt::calculate_failure()
     for(int i = 1, j = 0;i < combine_str.length();++i)
     {
         if(failure[i - 1] == pattern.length()) // failure[i - 1] == pattern.length() is my own alternative for in case failure > pattern length (z.B. ABZABC ABZABCABZABC)
-            j = failure[j - 1];
+            j = 0;
+            //j = failure[j - 1];
 
         while(combine_str[i] != combine_str[j] && j > 0)
         {
