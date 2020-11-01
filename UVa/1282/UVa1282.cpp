@@ -8,14 +8,13 @@
 // [ ] Completed
 
 #include <iostream>
-#include <ctime>
+#include <fstream>
 #include <vector>
-
-#define INF 2147483647
-#define EPS 1e-9
-#define DEFAULT_FIXSTR 3
+#include <ctime>
 
 using namespace std;
+
+#define NDEBUG
 
 #ifndef KNUTHMORRISPRATT_HPP
 #define KNUTHMORRISPRATT_HPP
@@ -29,7 +28,7 @@ private:
 protected:
     string text, pattern;
     vector<int> answer_pos; //answer text[answer_pos] == pattern[0]
-    int * failure; // second longest proper prefix-suffix length
+    vector<int> failure; // second longest proper prefix-suffix length
 
     void calculate_failure(bool allow_overlap);
     void matching();
@@ -40,14 +39,8 @@ protected:
 
 public:
     KnuthMorrisPratt(string text, string pattern):
-        text(text), pattern(pattern)
+        text(text), pattern(pattern), failure(text.length() + pattern.length())
     {
-        failure = new int[text.length() + pattern.length()];
-    }
-
-    ~KnuthMorrisPratt()
-    {
-        delete[] failure;
     }
 
     vector<int> answer(bool allow_overlap = true);
@@ -94,7 +87,7 @@ void KnuthMorrisPratt::calculate_failure(bool allow_overlap)
 
 void KnuthMorrisPratt::matching()
 {
-    for(int i = 0;i < text.length();++i)
+    for(int i = pattern.size() - 1;i < text.length();++i) // i = pattern.size() is avoid ... (z.B. text: 0110, pattern: 101, result should be 0 but 1)
     {
         if(failure[pattern.length() + i] == pattern.length())
         {
@@ -136,7 +129,7 @@ vector<int> KnuthMorrisPratt::answer(bool allow_overlap)
     }
     else
     {
-        clog << "Matched!" << endl;
+        clog << "Matched! " << answer_pos.size() << endl;
         clog << text << endl;
         int idx = 0;
         for(int i = 0;i < text.length() && idx < answer_pos.size();++i)
@@ -158,12 +151,12 @@ vector<int> KnuthMorrisPratt::answer(bool allow_overlap)
 
 #endif // KNUTHMORRISPRATT_HPP
 
-static const int MAX_N = 100 // 0 <= N <= 100
+static const int MAX_N = 100; // 0 <= N <= 100
 
 class UVa1282
 {
 public:
-    UVa1282(): fibonacci_word_sequence_length(MAX_N + 1, -1), occurrence_times(MAX_N + 1)
+    UVa1282(): fibonacci_word_sequence_length(MAX_N + 1, -1), occurrence_times(MAX_N + 1), fibonacci_word_sequence(2)
     {
         // prepare fibonacci word sequenece length
         fibonacci_word_sequence_length[0] = 1;
@@ -178,7 +171,9 @@ public:
     {
         for(int i = 0;i <= n;++i) occurrence_times[i] = -1;
         occurrence_pattern = pattern;
-        return count_occurrence_times_recursive(n);
+        int ret = count_occurrence_times_recursive(n);
+        return ret;
+        //return count_occurrence_times_recursive(n);
     }
 
 private:
@@ -191,13 +186,45 @@ private:
     }
 
     vector<string> fibonacci_word_sequence;
-    string fibonacci_word_sequence_get(int n)
+    string& fibonacci_word_sequence_get(int n)
     {
-        // [TODO]
+        if(fibonacci_word_sequence.size() < (n + 1))
+            fibonacci_word_sequence.resize(n + 1);
+        if(fibonacci_word_sequence[n] == "")
+        {
+            fibonacci_word_sequence[n] = (fibonacci_word_sequence_get(n - 1) + fibonacci_word_sequence_get(n - 2));
+        }
+        return fibonacci_word_sequence[n];
     }
     string fibonacci_word_sequence_get(int n, int length_max, bool right_side)
     {
-        // [TODO]
+        cout << n << " " << length_max << " " << right_side << endl;
+        if(length_max >= fibonacci_word_sequence_length[n])
+            return fibonacci_word_sequence_get(n);
+        if(right_side)
+        {
+            if(fibonacci_word_sequence_length[n - 2] >= length_max)
+            {
+                string ret = fibonacci_word_sequence_get(n - 2);
+                return ret.substr(ret.length() - length_max, length_max);
+            }
+            else // length(n) > pattern length > length(n - 2). In other word, longer than right part of n, but shorter than whole n.
+            {
+                return fibonacci_word_sequence_get(n - 1, length_max - fibonacci_word_sequence_length[n - 2], right_side) + fibonacci_word_sequence_get(n - 2);
+            }
+        }
+        else
+        {
+            if(fibonacci_word_sequence_length[n - 1] >= length_max)
+            {
+                string ret = fibonacci_word_sequence_get(n - 1);
+                return ret.substr(0, length_max);
+            }
+            else // length(n) > pattern length > length(n - 1). In other word, longer than left part of n, but shorter than whole n.
+            {
+                return fibonacci_word_sequence_get(n - 1) + fibonacci_word_sequence_get(n - 2, length_max - fibonacci_word_sequence_length[n - 1], right_side);
+            }
+        }
     }
 
     // fibonacci word sequenece occurrence record array
@@ -210,30 +237,12 @@ private:
         if(fibonacci_word_sequence_length[n] < occurrence_pattern.length())
             return occurrence_times[n] = 0;
         int ret = count_occurrence_times_recursive(n - 1) + count_occurrence_times_recursive(n - 2);
-        string combine_str = fibonacci_word_sequence_get(n - 1, occurrence_pattern - 1, true) + fibonacci_word_sequence_get(n - 2, occurrence_pattern - 1, false);
+        string combine_str = fibonacci_word_sequence_get(n - 1, occurrence_pattern.length() - 1, true) + fibonacci_word_sequence_get(n - 2, occurrence_pattern.length() - 1, false);
         KnuthMorrisPratt kmp(combine_str, occurrence_pattern);
         ret += kmp.answer().size();
         return occurrence_times[n] = ret;
     }
 };
-
-inline string _fixstr(string para, int alignment_num = DEFAULT_FIXSTR)
-{
-    para.resize(alignment_num, ' ');
-    return para;
-}
-inline string _fixstr(char para, int alignment_num = DEFAULT_FIXSTR)
-{
-    string ret = string(1, para);
-    return _fixstr(ret, alignment_num);
-}
-inline string _fixstr(int para, int alignment_num = DEFAULT_FIXSTR)
-{
-    string ret = to_string(para);
-    if(para == INF)
-        ret = "INF";
-    return _fixstr(ret, alignment_num);
-}
 
 int main(int argc, char* argv[])
 {
@@ -246,7 +255,7 @@ int main(int argc, char* argv[])
         input = new ifstream(argv[1]);
     }
 
-    int n;
+    int n, t = 0;
     UVa1282 uva_1282;
 
     while((*input) >> n)
@@ -254,7 +263,7 @@ int main(int argc, char* argv[])
         string pattern;
         (*input).ignore(1, '\n');
         getline((*input), pattern);
-        cout << "Case " << t << ": " << uva_1282.count_occurrence_times(n, pattern) << endl;
+        cout << "Case " << ++t << ": " << uva_1282.count_occurrence_times(n, pattern) << endl;
     }
 
     if(argc == 2)
