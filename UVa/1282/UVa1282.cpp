@@ -167,18 +167,16 @@ public:
         fibonacci_word_sequence[1] = "1";
     }
 
-    int count_occurrence_times(int n, string pattern)
+    unsigned long long int count_occurrence_times(int n, string pattern)
     {
         for(int i = 0;i <= n;++i) occurrence_times[i] = -1;
         occurrence_pattern = pattern;
-        int ret = count_occurrence_times_recursive(n);
-        return ret;
-        //return count_occurrence_times_recursive(n);
+        return count_occurrence_times_recursive(n);
     }
 
 private:
-    vector<int> fibonacci_word_sequence_length;
-    inline int fibonacci_word_sequence_length_calculate(int n)
+    vector<unsigned long long int> fibonacci_word_sequence_length;
+    inline unsigned long long int fibonacci_word_sequence_length_calculate(int n)
     {
         if(fibonacci_word_sequence_length[n] != -1)
             return fibonacci_word_sequence_length[n];
@@ -198,13 +196,14 @@ private:
     }
     string fibonacci_word_sequence_get(int n, int length_max, bool right_side)
     {
-        cout << n << " " << length_max << " " << right_side << endl;
         if(length_max >= fibonacci_word_sequence_length[n])
             return fibonacci_word_sequence_get(n);
         if(right_side)
         {
             if(fibonacci_word_sequence_length[n - 2] >= length_max)
             {
+                if(fibonacci_word_sequence_length[n - 2] > length_max * 2)
+                    return fibonacci_word_sequence_get(n - 2, length_max, right_side);
                 string ret = fibonacci_word_sequence_get(n - 2);
                 return ret.substr(ret.length() - length_max, length_max);
             }
@@ -217,7 +216,9 @@ private:
         {
             if(fibonacci_word_sequence_length[n - 1] >= length_max)
             {
-                string ret = fibonacci_word_sequence_get(n - 1);
+                if(fibonacci_word_sequence_length[n - 1] > length_max * 2)
+                    return fibonacci_word_sequence_get(n - 1, length_max, right_side);
+                string ret = fibonacci_word_sequence_get(n - 1).substr(0, length_max);
                 return ret.substr(0, length_max);
             }
             else // length(n) > pattern length > length(n - 1). In other word, longer than left part of n, but shorter than whole n.
@@ -228,15 +229,15 @@ private:
     }
 
     // fibonacci word sequenece occurrence record array
-    vector<int> occurrence_times;
+    vector<unsigned long long int> occurrence_times;
     string occurrence_pattern;
-    int count_occurrence_times_recursive(int n)
+    unsigned long long int count_occurrence_times_recursive(int n)
     {
         if(occurrence_times[n] != -1)
             return occurrence_times[n];
         if(fibonacci_word_sequence_length[n] < occurrence_pattern.length())
             return occurrence_times[n] = 0;
-        int ret = count_occurrence_times_recursive(n - 1) + count_occurrence_times_recursive(n - 2);
+        unsigned long long int ret = count_occurrence_times_recursive(n - 1) + count_occurrence_times_recursive(n - 2);
         string combine_str = fibonacci_word_sequence_get(n - 1, occurrence_pattern.length() - 1, true) + fibonacci_word_sequence_get(n - 2, occurrence_pattern.length() - 1, false);
         KnuthMorrisPratt kmp(combine_str, occurrence_pattern);
         ret += kmp.answer().size();
