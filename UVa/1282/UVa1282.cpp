@@ -237,10 +237,22 @@ private:
             return occurrence_times[n];
         if(fibonacci_word_sequence_length[n] < occurrence_pattern.length())
             return occurrence_times[n] = 0;
+
+        if(n == 0 || n == 1)
+        {
+            if(fibonacci_word_sequence_get(n) == occurrence_pattern)
+                return 1;
+            else
+                return 0;
+        }
+
         unsigned long long int ret = count_occurrence_times_recursive(n - 1) + count_occurrence_times_recursive(n - 2);
-        string combine_str = fibonacci_word_sequence_get(n - 1, occurrence_pattern.length() - 1, true) + fibonacci_word_sequence_get(n - 2, occurrence_pattern.length() - 1, false);
-        KnuthMorrisPratt kmp(combine_str, occurrence_pattern);
-        ret += kmp.answer().size();
+        if(occurrence_pattern.length() != 1)
+        {
+            string combine_str = fibonacci_word_sequence_get(n - 1, occurrence_pattern.length() - 1, true) + fibonacci_word_sequence_get(n - 2, occurrence_pattern.length() - 1, false);
+            KnuthMorrisPratt kmp(combine_str, occurrence_pattern);
+            ret += kmp.answer().size();
+        }
         return occurrence_times[n] = ret;
     }
 };
