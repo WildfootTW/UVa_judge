@@ -5,7 +5,7 @@
  * Distributed under terms of the MIT license.
  */
 
-// [ ] Time limit exceeded
+// [x] Accepted
 
 #include <iostream>
 #include <vector>
@@ -36,9 +36,7 @@ public:
     void input()
     {
         for(size_t i = 0;i < total_d;++i)
-        {
             cin >> pixels[i].first >> pixels[i].second;
-        }
     }
 private:
     size_t total_d, total_k;
@@ -52,22 +50,24 @@ private:
         unsigned long long int ret = INF;
         for(size_t i = 1;i <= (d - k + 1);++i) // first block d
         {
-            ret = min(ret, get_sum_squared_errors(pos, i, 1) + get_sum_squared_errors(i, d - i, k - 1));
+            ret = min(ret, get_sum_squared_errors(pos, i, 1) + get_sum_squared_errors(pos + i, d - i, k - 1));
         }
         return squared_errors[pos][d][k] = ret;
     }
 
-    unsigned long long int get_squared_errors(size_t pos, size_t d) // [TODO] Binary Linear Equation
+    unsigned long long int get_squared_errors(size_t pos, size_t d) // Binary Linear Equation
     {
-        unsigned long long int ret = INF;
-        for(size_t i = pixels[pos].first;i <= pixels[pos + d - 1].first;++i) // new position
+        long double a = 0, b = 0;
+        for(size_t i = pos;i < (pos + d);++i) // a*x^2 - b*x + c
         {
-            unsigned long long int nret = 0;
-            for(size_t j = pos;j < (pos + d);++j)
-            {
-                nret += (pow((pixels[j].first - (int)i), 2) * pixels[j].second);
-            }
-            ret = min(ret, nret);
+            a += pixels[i].second;
+            b += pixels[i].first * 2 * pixels[i].second;
+        }
+        int value_new = round(b / a / 2);
+        unsigned long long int ret = 0;
+        for(size_t i = pos;i < (pos + d);++i)
+        {
+            ret += (pow(pixels[i].first - value_new, 2) * pixels[i].second);
         }
         return ret;
     }
