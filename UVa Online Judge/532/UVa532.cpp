@@ -155,10 +155,10 @@ int solve_problem()
 
     while(!qu.empty())
         qu.pop();
-    
+
     qu.push(Start_cell);
     cells[Start_cell.level][Start_cell.row][Start_cell.column].used = true;
-    
+
     return BFS();
 }
 
@@ -179,6 +179,6 @@ int main()
     }
 
     //cout << "Time used = " << (double)clock() / CLOCKS_PER_SEC << endl;
-    return 0;   
+    return 0;
 }
 
