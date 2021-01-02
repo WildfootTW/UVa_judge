@@ -5,7 +5,7 @@
  * Distributed under terms of the MIT license.
  */
 
-// [ ] Completed
+// [ ] Time limit exceeded
 
 #include <iostream>
 #include <vector>
@@ -25,7 +25,7 @@ public:
         squared_errors(total_d, vector< vector<unsigned long long int> >
                       (total_d + 1, vector<unsigned long long int>
                       (total_k + 1, INF))), // squared_errors[D][D][K] = INF
-        pixels(total_d)             // pixels[D]
+        pixels(total_d)                     // pixels[D]
     {
 
     }
@@ -57,7 +57,7 @@ private:
         return squared_errors[pos][d][k] = ret;
     }
 
-    unsigned long long int get_squared_errors(size_t pos, size_t d)
+    unsigned long long int get_squared_errors(size_t pos, size_t d) // [TODO] Binary Linear Equation
     {
         unsigned long long int ret = INF;
         for(size_t i = pixels[pos].first;i <= pixels[pos + d - 1].first;++i) // new position
