@@ -1,5 +1,6 @@
 /*
  * UVa1282.cpp
+ * ACM ICPC World Finals 2012 Problem D: Fibonacci Words
  * Copyleft (ɔ) 2020 wildfootw <wildfootw@wildfoo.tw>
  *
  * Distributed under terms of the MIT license.
